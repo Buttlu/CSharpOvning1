@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,21 +18,43 @@ namespace PersonalRegister
             register = new();
         }
 
-        public void LäggTill(Personal p)
+        public bool LäggTill(string förNamn, string efterNamn, int lön)
         {
-            register.Add(p);
-            AntalAnställda++;
+            if (förNamn is null || förNamn == string.Empty) {
+                Console.WriteLine("Felaktigt förnamn");
+                return false;
+            } else if (efterNamn is null || efterNamn == string.Empty) {
+                Console.WriteLine("Felaktigt efrternamn");
+                return false;
+            } else if (lön < 0) {
+                Console.WriteLine("Lönen är negativ");
+                return false;
+            }
+
+            register.Add(new Personal(förNamn, efterNamn, lön));
+            return true;
         }
 
-        public void Radera(string id)
+        public bool LäggTill(Personal p)
+        {
+            if (p is null)
+                return false;
+
+            register.Add(p);
+            AntalAnställda++;
+            return true;
+        }
+
+        public bool Radera(string id)
         {
             Personal? p = register.Find(p => p.Id == id);
             if (p is null) {
                 Console.WriteLine($"Anställd med id \"{id}\" kunde inte hittas.");
-                return;
+                return false;
             }
             register.Remove(p);
             AntalAnställda--;
+            return true;
         }
 
         public Personal? HittaMedId(string id) => register.First(p => p.Id == id);
