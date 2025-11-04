@@ -59,26 +59,68 @@
 
             Console.Write("Skriv lön: ");
             string? lönStr = Console.ReadLine();
-            int lön;
-            if (!int.TryParse(lönStr, out lön)) {
+            if (!int.TryParse(lönStr, out int lön)) {
                 Console.WriteLine("Ogiltig lön");
                 return;
             }
 
             if (register.LäggTill(förnamn, efternamn, lön))
                 Console.WriteLine($"Ny personal tillagd ({förnamn} {efternamn})");
-
         }
 
         static void HittaPersonal()
         {
+            Console.WriteLine("1. Hitta enstaka anställd med ID");
+            Console.WriteLine("2. Hitta flera anställa med förnamn");
+            Console.WriteLine("3. Hitta flera anställa med efternamnm");
+            Console.WriteLine("E. Avbryt");
+            string input = (Console.ReadLine() ?? "").ToUpper();
 
+            switch (input) {
+                case "1":
+                    Console.Write("Skriv ID: ");
+                    Personal? personal = register.HittaMedId(Console.ReadLine() ?? "");
+                    if (personal is null) {
+                        Console.WriteLine("Misslyckades. Personal kunde inte hittas");
+                    } else {
+                        Console.WriteLine($"Hittade {personal.FörNamn} {personal.EfterNamn} med lön {personal.Lön} kr");
+                    }
+                    break;
+
+                case "2":
+                    Console.Write("Skriv förnamn: ");
+                    var personalLista = register.HittaMedNamnFörNamn(Console.ReadLine() ?? "");
+                    if (personalLista.Count == 0) {
+                        Console.WriteLine("Ingen hittades");
+                    } else {
+                        PersonalRegister.PrintRegister(personalLista);
+                    }
+                    break;
+
+                case "3":
+                    Console.Write("Skriv efternamn: ");
+                    personalLista = register.HittaMedNamnEfterNamn(Console.ReadLine() ?? "");
+                    if (personalLista.Count == 0) {
+                        Console.WriteLine("Ingen hittades");
+                    } else {
+                        PersonalRegister.PrintRegister(personalLista);
+                    }
+                    break;
+
+                case "E":
+                    Console.WriteLine("Avbryter");
+                    return;
+            }
         }
 
         static void TaBortPersonal()
         {
             Console.Write("\nSkriv id: ");
             string? id = Console.ReadLine();
+            
+            if (register.Radera(id)) {
+                Console.WriteLine($"Personal med id: {id} har tagits bort");
+            }
         }
     }
 }

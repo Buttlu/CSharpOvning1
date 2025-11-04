@@ -69,5 +69,13 @@ namespace PersonalRegister
                 p.SkrivPersonalInfo();   
             }
         }
+
+        public static void PrintRegister(List<Personal> register)
+        {
+            Console.WriteLine($"Skriver ut info för {register.Count} anställda.");
+            foreach (var p in register) {
+                p.SkrivPersonalInfo();
+            }
+        }
     }
 }
