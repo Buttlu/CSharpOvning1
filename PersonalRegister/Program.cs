@@ -6,6 +6,7 @@
         {
             var a = new Personal("a", "b", 12);
             a.SkrivPersonalInfo();
+            Console.WriteLine("test");
         }
     }
 }
