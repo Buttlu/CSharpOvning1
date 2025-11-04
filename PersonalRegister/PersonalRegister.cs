@@ -21,17 +21,18 @@ namespace PersonalRegister
         public bool LäggTill(string förNamn, string efterNamn, int lön)
         {
             if (förNamn is null || förNamn == string.Empty) {
-                Console.WriteLine("Felaktigt förnamn");
+                Console.WriteLine("Misslyckades. Felaktigt förnamn");
                 return false;
             } else if (efterNamn is null || efterNamn == string.Empty) {
-                Console.WriteLine("Felaktigt efrternamn");
+                Console.WriteLine("Misslyckades. Felaktigt efrternamn");
                 return false;
             } else if (lön < 0) {
-                Console.WriteLine("Lönen är negativ");
+                Console.WriteLine("Misslyckades. Lönen är negativ");
                 return false;
             }
 
             register.Add(new Personal(förNamn, efterNamn, lön));
+            AntalAnställda++;
             return true;
         }
 
